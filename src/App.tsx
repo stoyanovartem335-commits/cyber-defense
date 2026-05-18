@@ -413,7 +413,7 @@ export default function App() {
                 <div className="p-6 rounded-2xl bg-cyber-primary/5 border border-cyber-primary/10 relative overflow-hidden group">
                   <div className="absolute top-0 right-0 p-4 opacity-10"><Globe /></div>
                   <div className="text-3xl sm:text-4xl font-display font-bold text-white mb-2 text-glow-primary">2.45 млрд</div>
-                  <div className="text-slate-300 text-sm font-light">Прогнозована кількість кіберінцидентів у 2025 році</div>
+                  <div className="text-slate-300 text-sm font-light">Прогнозована кількість кіберінцидентів за 2025 рік</div>
                 </div>
                 <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/5">
                   <div className="text-3xl sm:text-4xl font-display font-bold text-white mb-2 text-glow-secondary">$10.5 трлн</div>

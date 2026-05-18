@@ -22,7 +22,8 @@ import {
   ShieldCheck,
   MousePointer2,
   Database,
-  X
+  X,
+  Menu // Додано іконку меню
 } from "lucide-react";
 import { 
   XAxis, 
@@ -50,10 +51,19 @@ const statsData = [
   { year: "2025", attacks: 2450 },
 ];
 
+const navLinks = [
+  { id: "intro", label: "Вступ" },
+  { id: "history", label: "Історія" },
+  { id: "viruses", label: "Віруси" },
+  { id: "ai", label: "AI & Безпека" },
+  { id: "stats", label: "Статистика" },
+  { id: "protection", label: "Захист" },
+];
+
 const Slide = ({ children, className, id }: { children: React.ReactNode, className?: string, id?: string }) => (
   <section 
     id={id}
-    className={cn("min-h-screen flex flex-col justify-center px-4 sm:px-6 py-20 md:py-24 relative overflow-hidden", className)}
+    className={cn("min-h-screen flex flex-col justify-center px-4 sm:px-8 py-20 md:py-24 relative overflow-hidden", className)}
   >
     <div className="max-w-7xl mx-auto w-full relative z-10">
       {children}
@@ -100,7 +110,7 @@ const NavDot: React.FC<{
   return (
     <a 
       href={`#${section}`}
-      className="group relative flex items-center justify-center h-4 w-4 z-10"
+      className="group relative flex items-center justify-center h-4 w-4 sm:h-5 sm:w-5 z-10"
     >
       <motion.div 
         animate={{ 
@@ -110,14 +120,14 @@ const NavDot: React.FC<{
         }}
         transition={{ type: "spring", stiffness: 400, damping: 30 }}
         className={cn(
-          "w-4 h-4 rounded-full flex items-center justify-center transition-all duration-500 border border-white/5",
-          isReached ? "border-cyber-primary shadow-[0_0_8px_rgba(239,68,68,0.4)]" : "border-transparent"
+          "w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center transition-all duration-500 border border-white/5",
+          isReached ? "border-cyber-primary shadow-[0_0_8px_rgba(239,68,68,0.4)]" : "border-transparent bg-cyber-dark/50"
         )}
       >
-        <Icon className="w-2.5 h-2.5 stroke-[2.5]" />
+        <Icon className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[2.5]" />
       </motion.div>
       
-      <span className="absolute right-9 px-3 py-1.5 glass rounded-lg text-[9px] text-white opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap pointer-events-none uppercase tracking-[0.2em] translate-x-4 group-hover:translate-x-0 shadow-2xl">
+      <span className="absolute right-8 sm:right-10 px-3 py-1.5 bg-cyber-dark/90 backdrop-blur-md border border-white/10 rounded-lg text-[10px] text-white opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap pointer-events-none uppercase tracking-[0.2em] translate-x-4 group-hover:translate-x-0 shadow-2xl">
         {section === 'intro' ? 'Вступ' : 
          section === 'history' ? 'Зародження' :
          section === 'viruses' ? 'Віруси' :
@@ -138,44 +148,134 @@ export default function App() {
   });
 
   const [activeExtra, setActiveExtra] = useState<null | 'materials' | 'sources'>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Стан мобільного меню
 
   return (
-    <div className="relative bg-cyber-dark overflow-x-hidden">
+    <div className="relative bg-[#050505] overflow-x-hidden min-h-screen">
+      {/* Глобальні стилі для кастомного скроллбару */}
+      <style dangerouslySetInnerHTML={{__html: `
+        ::-webkit-scrollbar {
+          width: 8px;
+          height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+          background: #050505;
+          border-left: 1px solid rgba(255,255,255,0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+          background: linear-gradient(to bottom, #ef4444, #8b5cf6);
+          border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: #ef4444;
+        }
+        /* Для Firefox */
+        * {
+          scrollbar-width: thin;
+          scrollbar-color: #ef4444 #050505;
+        }
+      `}} />
+
       {/* Background Decor */}
       <div className="fixed inset-0 pointer-events-none grid-background opacity-20" aria-hidden="true" />
       <div className="fixed top-0 left-1/4 w-[600px] h-[600px] bg-cyber-primary/5 blur-[150px] rounded-full pointer-events-none" aria-hidden="true" />
       <div className="fixed bottom-0 right-1/4 w-[600px] h-[600px] bg-cyber-secondary/5 blur-[150px] rounded-full pointer-events-none" aria-hidden="true" />
 
-      {/* Progress Bar */}
+      {/* Progress Bar Top */}
       <motion.div 
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyber-primary to-cyber-secondary z-50 origin-[0%]" 
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyber-primary to-cyber-secondary z-[60] origin-[0%]" 
         style={{ scaleX }}
       />
 
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 h-20 flex items-center justify-between px-4 sm:px-8 z-40 backdrop-blur-md border-b border-white/5">
+      {/* Верхня навігація */}
+      <nav className="fixed top-0 left-0 right-0 h-20 flex items-center justify-between px-4 sm:px-8 z-50 bg-[#050505]/80 backdrop-blur-lg border-b border-white/5">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-cyber-primary to-cyber-secondary flex items-center justify-center shadow-lg shadow-cyber-primary/20">
             <Shield className="text-white w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <span className="font-display font-bold text-lg sm:text-xl tracking-tighter text-white">CyberDefense</span>
         </div>
+
+        {/* Десктопне меню */}
         <div className="hidden lg:flex items-center gap-8 text-sm font-medium text-slate-300">
-          <a href="#intro" className="hover:text-cyber-primary transition-colors">Вступ</a>
-          <a href="#history" className="hover:text-cyber-primary transition-colors">Історія</a>
-          <a href="#viruses" className="hover:text-cyber-primary transition-colors">Віруси</a>
-          <a href="#ai" className="hover:text-cyber-primary transition-colors">AI & Безпека</a>
-          <a href="#stats" className="hover:text-cyber-primary transition-colors">Статистика</a>
-          <a href="#protection" className="hover:text-cyber-primary transition-colors">Захист</a>
-          <a href="#conclusion" className="px-4 py-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors border border-white/10 text-white">Висновок</a>
+          {navLinks.map((link) => (
+            <a key={link.id} href={`#${link.id}`} className="hover:text-cyber-primary transition-colors">
+              {link.label}
+            </a>
+          ))}
+          <a href="#conclusion" className="px-4 py-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors border border-white/10 text-white">
+            Висновок
+          </a>
         </div>
+
+        {/* Кнопка мобільного меню */}
+        <button 
+          className="lg:hidden p-2 text-slate-300 hover:text-white transition-colors"
+          onClick={() => setIsMobileMenuOpen(true)}
+        >
+          <Menu className="w-7 h-7" />
+        </button>
       </nav>
 
-      {/* Sidebar Navigation */}
-      <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 hidden xl:flex flex-col items-center">
-        <div className="glass p-1 rounded-full flex flex-col gap-3 relative overflow-hidden">
+      {/* Мобільне меню (Виїжджає збоку) */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
           <motion.div 
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] bg-gradient-to-b from-cyber-primary to-cyber-secondary origin-top opacity-20"
+            className="fixed inset-0 z-[70] flex justify-end"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            {/* Затемнення фону */}
+            <div 
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm" 
+              onClick={() => setIsMobileMenuOpen(false)} 
+            />
+            
+            {/* Сама панель меню */}
+            <motion.div 
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="relative w-64 sm:w-80 h-full bg-[#050505]/95 backdrop-blur-xl border-l border-white/10 flex flex-col pt-24 px-6 pb-10"
+            >
+              <button 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="absolute top-6 right-6 p-2 rounded-full bg-white/5 text-slate-400 hover:text-white transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              
+              <div className="flex flex-col gap-6 text-lg font-display">
+                {navLinks.map((link) => (
+                  <a 
+                    key={link.id} 
+                    href={`#${link.id}`} 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-slate-300 hover:text-cyber-primary transition-colors border-b border-white/5 pb-4"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+                <a 
+                  href="#conclusion" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="mt-4 px-6 py-3 bg-gradient-to-r from-cyber-primary to-cyber-secondary rounded-xl text-white font-bold text-center shadow-lg shadow-cyber-primary/20"
+                >
+                  Висновок
+                </a>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Sidebar Navigation (Адаптовано для мобільних) */}
+      <div className="fixed right-2 sm:right-6 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center scale-[0.65] sm:scale-100 origin-right">
+        <div className="bg-[#050505]/60 backdrop-blur-md p-1.5 sm:p-2 rounded-full border border-white/10 flex flex-col gap-3 sm:gap-4 relative overflow-hidden shadow-2xl">
+          <motion.div 
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-[2px] bg-gradient-to-b from-cyber-primary to-cyber-secondary origin-top opacity-50"
             style={{ height: "100%", scaleY: scrollYProgress }}
           />
            {[
@@ -199,7 +299,7 @@ export default function App() {
         </div>
       </div>
 
-      <main>
+      <main className="pr-4 sm:pr-0"> {/* Відступ щоб текст не налізав на бокову панель на моб. */}
         {/* Intro Slide */}
         <Slide id="intro" className="pt-32 sm:pt-40">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -212,7 +312,7 @@ export default function App() {
                 <Activity className="w-3 h-3" />
                 Проект: Кібербезпека
               </div>
-              <h1 className="text-5xl sm:text-6xl md:text-8xl font-display font-bold text-white leading-[1] tracking-tighter mb-8 text-glow-primary">
+              <h1 className="text-5xl sm:text-6xl md:text-8xl font-display font-bold text-white leading-[1.1] tracking-tighter mb-8 text-glow-primary">
                 Основи <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyber-primary to-cyber-secondary">кібер</span> <br />
                 безпеки
@@ -263,7 +363,7 @@ export default function App() {
                   alt="Virus History" 
                   className="w-full h-auto opacity-70 grayscale hover:grayscale-0 transition-all duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-cyber-dark to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent" />
                 <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8">
                    <div className="text-cyber-primary font-mono text-xs sm:text-sm mb-2">1971: The Birth</div>
                    <h3 className="text-xl sm:text-2xl font-display font-bold text-white">Creeper Virus</h3>
@@ -393,7 +493,7 @@ export default function App() {
                     className="w-full h-auto rounded-[24px] sm:rounded-[32px] mix-blend-screen"
                    />
                 </div>
-                <div className="absolute -bottom-4 -right-2 sm:-bottom-6 sm:-right-6 p-4 sm:p-6 rounded-3xl bg-cyber-dark border border-white/10 shadow-2xl">
+                <div className="absolute -bottom-4 -right-2 sm:-bottom-6 sm:-right-6 p-4 sm:p-6 rounded-3xl bg-[#050505] border border-white/10 shadow-2xl">
                    <div className="text-cyber-primary font-mono text-[10px] sm:text-xs uppercase tracking-widest mb-1">Status</div>
                    <div className="text-white text-sm sm:text-base font-bold flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full bg-green-500 animate-ping" />
@@ -421,7 +521,7 @@ export default function App() {
                 </div>
               </div>
             </div>
-            {/* ИСПРАВЛЕННАЯ ВЫСОТА ДЛЯ ТЕЛЕФОНОВ */}
+            
             <div className="lg:col-span-3 min-h-[400px] lg:min-h-[500px] h-auto w-full bg-white/[0.01] rounded-[24px] sm:rounded-[32px] border border-white/5 p-5 sm:p-8 backdrop-blur-sm relative overflow-hidden flex flex-col">
                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
                   <h3 className="font-display font-semibold text-lg sm:text-xl text-white">Динаміка Кібератак (млн)</h3>
@@ -431,7 +531,7 @@ export default function App() {
                      </div>
                   </div>
                </div>
-               {/* Обертка самого графика */}
+               
                <div className="h-[200px] sm:h-[250px] lg:h-[300px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={statsData}>
@@ -451,7 +551,7 @@ export default function App() {
                     </AreaChart>
                   </ResponsiveContainer>
                </div>
-               {/* Текст снизу больше не будет обрезаться */}
+               
                <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-white/[0.02] rounded-xl border border-white/5 text-[9px] sm:text-[10px] text-slate-500 text-center uppercase tracking-[0.1em] sm:tracking-[0.2em] leading-relaxed">
                   Дані базуються на звітах Cybersecurity Ventures та Cisco Security Report 2024/25
                </div>
@@ -488,7 +588,7 @@ export default function App() {
                       "Не використовуйте публічний Wi-Fi для банківських операцій без VPN.",
                       "Не передавайте свої паролі та особисту інформацію стороннім особам, навіть якщо вони представляються працівниками сервісу чи підтримки.",
                       "Навчайте близьких (особливо старше покоління) базовому фішингу.",
-                      "Не завантажуйте підозрілі файли з неперевірених джерел, особливо формати .exe, .bat, .cmd, .msi, .scr, .js та .vbs, оскільки вони найчастіше можуть містити шкідливе програмне забезпечення."
+                      "Не завантажуйте підозрілі файли з неперевірених джерел, особливо формати .exe, .bat, .cmd, .msi, .scr, .js та .vbs."
                     ].map((rule, ri) => (
                       <li key={ri} className="flex gap-4 items-start text-slate-200 font-light text-sm sm:text-base">
                         <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-cyber-primary flex-shrink-0" />
@@ -536,7 +636,7 @@ export default function App() {
       </main>
 
       {/* Footer & Extra Views */}
-      <footer className="py-12 md:py-16 px-6 md:px-8 border-t border-white/5 bg-cyber-dark z-20 relative">
+      <footer className="py-12 md:py-16 px-6 md:px-8 border-t border-white/5 bg-[#050505] z-20 relative">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 md:gap-10 text-slate-600 text-[10px] tracking-[0.3em] uppercase text-center md:text-left">
           <div className="flex flex-col sm:flex-row items-center gap-3 md:gap-4">
             <div className="w-6 h-6 rounded-sm bg-cyber-primary/20 flex items-center justify-center">
@@ -564,7 +664,7 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Extra Info Overlay (Адаптировано для моб.) */}
+      {/* Extra Info Overlay */}
       <AnimatePresence>
         {activeExtra && (
           <motion.div 
@@ -573,7 +673,7 @@ export default function App() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
           >
-            <div className="absolute inset-0 bg-cyber-dark/95 backdrop-blur-xl" onClick={() => setActiveExtra(null)} />
+            <div className="absolute inset-0 bg-[#050505]/95 backdrop-blur-xl" onClick={() => setActiveExtra(null)} />
             <motion.div 
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}

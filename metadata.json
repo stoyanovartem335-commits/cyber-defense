@@ -1,0 +1,6 @@
+{
+  "name": "CyberDefense Pro | Artem Stoyanov",
+  "description": "Академічна презентація на тему Кібербезпека від Стоянова Артема для курсу інформатики",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

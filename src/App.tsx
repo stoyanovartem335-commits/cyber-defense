@@ -23,7 +23,7 @@ import {
   MousePointer2,
   Database,
   X,
-  Menu // Додано іконку меню
+  Menu 
 } from "lucide-react";
 import { 
   XAxis, 
@@ -36,7 +36,6 @@ import {
 } from "recharts";
 import { cn } from "@/src/lib/utils";
 
-// Импорт картинок (для сборщика Vite)
 import shieldImg from "./assets/images/cyber_red_hero_shield_1779117242436.png";
 import virusImg from "./assets/images/computer_virus_visual_1779117262729.png";
 import lockImg from "./assets/images/cyber_security_protection_lock_1779117278060.png";
@@ -148,11 +147,10 @@ export default function App() {
   });
 
   const [activeExtra, setActiveExtra] = useState<null | 'materials' | 'sources'>(null);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Стан мобільного меню
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <div className="relative bg-[#050505] overflow-x-hidden min-h-screen">
-      {/* Глобальні стилі для кастомного скроллбару */}
       <style dangerouslySetInnerHTML={{__html: `
         ::-webkit-scrollbar {
           width: 8px;
@@ -169,25 +167,21 @@ export default function App() {
         ::-webkit-scrollbar-thumb:hover {
           background: #ef4444;
         }
-        /* Для Firefox */
         * {
           scrollbar-width: thin;
           scrollbar-color: #ef4444 #050505;
         }
       `}} />
 
-      {/* Background Decor */}
       <div className="fixed inset-0 pointer-events-none grid-background opacity-20" aria-hidden="true" />
       <div className="fixed top-0 left-1/4 w-[600px] h-[600px] bg-cyber-primary/5 blur-[150px] rounded-full pointer-events-none" aria-hidden="true" />
       <div className="fixed bottom-0 right-1/4 w-[600px] h-[600px] bg-cyber-secondary/5 blur-[150px] rounded-full pointer-events-none" aria-hidden="true" />
 
-      {/* Progress Bar Top */}
       <motion.div 
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyber-primary to-cyber-secondary z-[60] origin-[0%]" 
         style={{ scaleX }}
       />
 
-      {/* Верхня навігація */}
       <nav className="fixed top-0 left-0 right-0 h-20 flex items-center justify-between px-4 sm:px-8 z-50 bg-[#050505]/80 backdrop-blur-lg border-b border-white/5">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-cyber-primary to-cyber-secondary flex items-center justify-center shadow-lg shadow-cyber-primary/20">
@@ -196,7 +190,6 @@ export default function App() {
           <span className="font-display font-bold text-lg sm:text-xl tracking-tighter text-white">CyberDefense</span>
         </div>
 
-        {/* Десктопне меню */}
         <div className="hidden lg:flex items-center gap-8 text-sm font-medium text-slate-300">
           {navLinks.map((link) => (
             <a key={link.id} href={`#${link.id}`} className="hover:text-cyber-primary transition-colors">
@@ -208,7 +201,6 @@ export default function App() {
           </a>
         </div>
 
-        {/* Кнопка мобільного меню */}
         <button 
           className="lg:hidden p-2 text-slate-300 hover:text-white transition-colors"
           onClick={() => setIsMobileMenuOpen(true)}
@@ -217,28 +209,24 @@ export default function App() {
         </button>
       </nav>
 
-      {/* Мобільне меню (Виїжджає збоку) */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div 
-            className="fixed inset-0 z-[70] flex justify-end"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            {/* Затемнення фону */}
-            <div 
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm" 
+          <>
+            <motion.div 
+              className="fixed inset-0 z-[65] bg-black/60"
+              initial={{ opacity: 0, backdropFilter: "blur(0px)", WebkitBackdropFilter: "blur(0px)" }}
+              animate={{ opacity: 1, backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
+              exit={{ opacity: 0, backdropFilter: "blur(0px)", WebkitBackdropFilter: "blur(0px)" }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
               onClick={() => setIsMobileMenuOpen(false)} 
             />
             
-            {/* Сама панель меню */}
             <motion.div 
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="relative w-64 sm:w-80 h-full bg-[#050505]/95 backdrop-blur-xl border-l border-white/10 flex flex-col pt-24 px-6 pb-10"
+              className="fixed top-0 right-0 z-[70] w-64 sm:w-80 h-full bg-[#050505]/95 backdrop-blur-xl border-l border-white/10 flex flex-col pt-24 px-6 pb-10 shadow-2xl"
             >
               <button 
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -267,13 +255,12 @@ export default function App() {
                 </a>
               </div>
             </motion.div>
-          </motion.div>
+          </>
         )}
       </AnimatePresence>
 
-      {/* Sidebar Navigation (Адаптовано для мобільних) */}
-      <div className="fixed right-2 sm:right-6 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center scale-[0.65] sm:scale-100 origin-right">
-        <div className="bg-[#050505]/60 backdrop-blur-md p-1.5 sm:p-2 rounded-full border border-white/10 flex flex-col gap-3 sm:gap-4 relative overflow-hidden shadow-2xl">
+      <div className="fixed right-2 sm:right-6 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center scale-[0.65] sm:scale-100 origin-right pointer-events-none">
+        <div className="bg-[#050505]/60 backdrop-blur-md p-1.5 sm:p-2 rounded-full border border-white/10 flex flex-col gap-3 sm:gap-4 relative overflow-hidden shadow-2xl pointer-events-auto">
           <motion.div 
             className="absolute top-0 left-1/2 -translate-x-1/2 w-[2px] bg-gradient-to-b from-cyber-primary to-cyber-secondary origin-top opacity-50"
             style={{ height: "100%", scaleY: scrollYProgress }}
@@ -299,8 +286,7 @@ export default function App() {
         </div>
       </div>
 
-      <main className="pr-4 sm:pr-0"> {/* Відступ щоб текст не налізав на бокову панель на моб. */}
-        {/* Intro Slide */}
+      <main className="pr-4 sm:pr-0">
         <Slide id="intro" className="pt-32 sm:pt-40">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -348,7 +334,6 @@ export default function App() {
           </div>
         </Slide>
 
-        {/* History Section */}
         <Slide id="history" className="bg-white/[0.01]">
           <div className="mb-12 md:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-6 uppercase tracking-tight">Зародження  цифрових загроз</h2>
@@ -390,7 +375,6 @@ export default function App() {
           </div>
         </Slide>
 
-        {/* Famous Viruses */}
         <Slide id="viruses">
           <div className="mb-12 md:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4 md:mb-6 uppercase tracking-tight">Зал Слави Шкідливого ПЗ</h2>
@@ -440,7 +424,6 @@ export default function App() {
           </div>
         </Slide>
 
-        {/* AI in Cybersecurity */}
         <Slide id="ai" className="bg-white/[0.01]">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
              <motion.div
@@ -504,7 +487,6 @@ export default function App() {
           </div>
         </Slide>
 
-        {/* Dynamic Stats */}
         <Slide id="stats">
           <div className="grid lg:grid-cols-5 gap-12 lg:gap-16 items-start">
             <div className="lg:col-span-2">
@@ -559,7 +541,6 @@ export default function App() {
           </div>
         </Slide>
 
-        {/* Detailed Protection Strategy */}
         <Slide id="protection" className="bg-white/[0.01]">
           <div className="mb-12 md:mb-16 text-center">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4 sm:mb-6 uppercase tracking-tight text-glow-primary">Як захистити себе?</h2>
@@ -608,7 +589,6 @@ export default function App() {
           </div>
         </Slide>
 
-        {/* Conclusion Section */}
         <Slide id="conclusion">
           <div className="max-w-4xl mx-auto text-center">
             <motion.div
@@ -635,7 +615,6 @@ export default function App() {
         </Slide>
       </main>
 
-      {/* Footer & Extra Views */}
       <footer className="py-12 md:py-16 px-6 md:px-8 border-t border-white/5 bg-[#050505] z-20 relative">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 md:gap-10 text-slate-600 text-[10px] tracking-[0.3em] uppercase text-center md:text-left">
           <div className="flex flex-col sm:flex-row items-center gap-3 md:gap-4">
@@ -664,7 +643,6 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Extra Info Overlay */}
       <AnimatePresence>
         {activeExtra && (
           <motion.div 
@@ -673,12 +651,20 @@ export default function App() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
           >
-            <div className="absolute inset-0 bg-[#050505]/95 backdrop-blur-xl" onClick={() => setActiveExtra(null)} />
             <motion.div 
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              className="max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-white/[0.03] border border-white/10 rounded-3xl p-6 sm:p-10 relative z-10 custom-scrollbar"
+              className="absolute inset-0 bg-[#050505]/80"
+              initial={{ backdropFilter: "blur(0px)", WebkitBackdropFilter: "blur(0px)" }}
+              animate={{ backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
+              exit={{ backdropFilter: "blur(0px)", WebkitBackdropFilter: "blur(0px)" }}
+              transition={{ duration: 0.3 }}
+              onClick={() => setActiveExtra(null)} 
+            />
+            <motion.div 
+              initial={{ scale: 0.9, y: 20, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.9, y: 20, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-white/[0.03] border border-white/10 rounded-3xl p-6 sm:p-10 relative z-10 custom-scrollbar shadow-2xl"
             >
               <button 
                 onClick={() => setActiveExtra(null)}

@@ -218,7 +218,7 @@ export default function App() {
                 безпеки
               </h1>
               <p className="text-lg sm:text-xl text-slate-200 max-w-lg mb-10 leading-relaxed font-light">
-                Стислий огляд ключових аспектів цифрового захисту. Лаконічно про історію, головні загрози та методи збереження ваших даних у сучасному вебі.
+                Стислий огляд ключових аспектів цифрового захисту. Лаконічно про історію, головні загрози та методи збереження ваших даних у сучасному інтернет просторі.
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-3 px-6 py-4 rounded-xl border border-white/10 text-white/70 text-sm font-mono tracking-wider bg-white/[0.02]">

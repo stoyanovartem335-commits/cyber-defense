@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from "react";
-import { motion, useScroll, useSpring, AnimatePresence, useMotionValueEvent } from "motion/react";
+import { motion, useScroll, useSpring, AnimatePresence } from "motion/react";
 import { 
   Shield, 
   Lock, 
@@ -16,7 +16,6 @@ import {
   ChevronDown,
   History as HistoryIcon,
   Bug,
-  Terminal,
   Activity,
   Eye,
   ShieldCheck,
@@ -87,57 +86,6 @@ const FeatureCard: React.FC<{ icon: any, title: string, description: string, del
   </motion.div>
 );
 
-const NavDot: React.FC<{ 
-  section: string, 
-  index: number, 
-  total: number, 
-  scrollYProgress: any,
-  icon: any
-}> = ({ section, index, total, scrollYProgress, icon: Icon }) => {
-  const [isReached, setIsReached] = React.useState(false);
-  const threshold = index === 0 ? 0 : (index - 0.6) / (total - 1);
-  
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const val = latest as number;
-    if (val >= threshold) {
-      if (!isReached) setIsReached(true);
-    } else {
-      if (isReached) setIsReached(false);
-    }
-  });
-
-  return (
-    <a 
-      href={`#${section}`}
-      className="group relative flex items-center justify-center h-4 w-4 sm:h-5 sm:w-5 z-10"
-    >
-      <motion.div 
-        animate={{ 
-          scale: isReached ? 1.1 : 0.8,
-          color: isReached ? "#fff" : "rgba(255, 255, 255, 0.2)",
-          backgroundColor: isReached ? "rgba(239, 68, 68, 1)" : "rgba(255, 255, 255, 0.03)",
-        }}
-        transition={{ type: "spring", stiffness: 400, damping: 30 }}
-        className={cn(
-          "w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center transition-all duration-500 border border-white/5",
-          isReached ? "border-cyber-primary shadow-[0_0_8px_rgba(239,68,68,0.4)]" : "border-transparent bg-cyber-dark/50"
-        )}
-      >
-        <Icon className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[2.5]" />
-      </motion.div>
-      
-      <span className="absolute right-8 sm:right-10 px-3 py-1.5 bg-cyber-dark/90 backdrop-blur-md border border-white/10 rounded-lg text-[10px] text-white opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap pointer-events-none uppercase tracking-[0.2em] translate-x-4 group-hover:translate-x-0 shadow-2xl">
-        {section === 'intro' ? 'Вступ' : 
-         section === 'history' ? 'Зародження' :
-         section === 'viruses' ? 'Віруси' :
-         section === 'ai' ? 'AI Захист' :
-         section === 'stats' ? 'Статистика' :
-         section === 'protection' ? 'Принципи' : 'Підсумок'}
-      </span>
-    </a>
-  );
-};
-
 export default function App() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -151,28 +99,6 @@ export default function App() {
 
   return (
     <div className="relative bg-[#050505] overflow-x-hidden min-h-screen">
-      <style dangerouslySetInnerHTML={{__html: `
-        ::-webkit-scrollbar {
-          width: 8px;
-          height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-          background: #050505;
-          border-left: 1px solid rgba(255,255,255,0.05);
-        }
-        ::-webkit-scrollbar-thumb {
-          background: linear-gradient(to bottom, #ef4444, #8b5cf6);
-          border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-          background: #ef4444;
-        }
-        * {
-          scrollbar-width: thin;
-          scrollbar-color: #ef4444 #050505;
-        }
-      `}} />
-
       <div className="fixed inset-0 pointer-events-none grid-background opacity-20" aria-hidden="true" />
       <div className="fixed top-0 left-1/4 w-[600px] h-[600px] bg-cyber-primary/5 blur-[150px] rounded-full pointer-events-none" aria-hidden="true" />
       <div className="fixed bottom-0 right-1/4 w-[600px] h-[600px] bg-cyber-secondary/5 blur-[150px] rounded-full pointer-events-none" aria-hidden="true" />
@@ -259,34 +185,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <div className="fixed right-2 sm:right-6 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center scale-[0.65] sm:scale-100 origin-right pointer-events-none">
-        <div className="bg-[#050505]/60 backdrop-blur-md p-1.5 sm:p-2 rounded-full border border-white/10 flex flex-col gap-3 sm:gap-4 relative overflow-hidden shadow-2xl pointer-events-auto">
-          <motion.div 
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-[2px] bg-gradient-to-b from-cyber-primary to-cyber-secondary origin-top opacity-50"
-            style={{ height: "100%", scaleY: scrollYProgress }}
-          />
-           {[
-             { id: 'intro', icon: Terminal }, 
-             { id: 'history', icon: HistoryIcon }, 
-             { id: 'viruses', icon: Bug }, 
-             { id: 'ai', icon: Cpu }, 
-             { id: 'stats', icon: Activity }, 
-             { id: 'protection', icon: Shield }, 
-             { id: 'conclusion', icon: ShieldCheck }
-           ].map((section, idx, arr) => (
-            <NavDot 
-              key={section.id}
-              section={section.id}
-              icon={section.icon}
-              index={idx}
-              total={arr.length}
-              scrollYProgress={scrollYProgress}
-            />
-          ))}
-        </div>
-      </div>
-
-      <main className="pr-4 sm:pr-0">
+      <main>
         <Slide id="intro" className="pt-32 sm:pt-40">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -664,7 +563,7 @@ export default function App() {
               animate={{ scale: 1, y: 0, opacity: 1 }}
               exit={{ scale: 0.9, y: 20, opacity: 0 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-white/[0.03] border border-white/10 rounded-3xl p-6 sm:p-10 relative z-10 custom-scrollbar shadow-2xl"
+              className="max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-white/[0.03] border border-white/10 rounded-3xl p-6 sm:p-10 relative z-10 shadow-2xl"
             >
               <button 
                 onClick={() => setActiveExtra(null)}

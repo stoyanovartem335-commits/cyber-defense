@@ -119,7 +119,7 @@ const NavDot: React.FC<{
       
       <span className="absolute right-9 px-3 py-1.5 glass rounded-lg text-[9px] text-white opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap pointer-events-none uppercase tracking-[0.2em] translate-x-4 group-hover:translate-x-0 shadow-2xl">
         {section === 'intro' ? 'Вступ' : 
-         section === 'history' ? 'Генезис' :
+         section === 'history' ? 'Зародження' :
          section === 'viruses' ? 'Віруси' :
          section === 'ai' ? 'AI Захист' :
          section === 'stats' ? 'Статистика' :
@@ -251,7 +251,7 @@ export default function App() {
         {/* History Section */}
         <Slide id="history" className="bg-white/[0.01]">
           <div className="mb-12 md:mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-6 uppercase tracking-tight">Генезис цифрових загроз</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-6 uppercase tracking-tight">Зародження  цифрових загроз</h2>
             <p className="text-slate-200 max-w-3xl text-base sm:text-lg font-light leading-relaxed">
               Перші рядки шкідливого коду були написані ще до того, як інтернет став невід'ємною частиною нашого побуту. Це історія трансформації академічної цікавості у складну цифрову зброю.
             </p>
@@ -469,9 +469,9 @@ export default function App() {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12 md:mb-16">
             {[
-              { icon: Key, title: "Паролі та MFA", desc: "Використовуйте менеджери паролів та двофакторну автентифікацію скрізь, де це можливо." },
+              { icon: Key, title: "Паролі та MFA", desc: "Використовуйте менеджери паролів та двофакторну аутентифікацію скрізь, де це можливо." },
               { icon: ShieldCheck, title: "Оновлення ПЗ", desc: "Ніколи не ігноруйте оновлення системи. Більшість атак використовують старі вразливості." },
-              { icon: MousePointer2, title: "Обережні кліки", desc: "Не переходьте за підозрілими посиланнями. Фішинг — головний метод зламу у 2025 році." },
+              { icon: MousePointer2, title: "Обережні кліки", desc: "Не переходьте за підозрілими посиланнями. Фішинг — головний метод зламу у 2025-2026 роках." },
               { icon: Database, title: "Бекапи", desc: "Завжди майте офлайн-копію ваших найважливіших документів та проектів." }
             ].map((p, i) => (
               <FeatureCard key={i} icon={p.icon || Lock} title={p.title} description={p.desc} delay={i * 0.1} />
@@ -487,7 +487,8 @@ export default function App() {
                       "Перевіряйте URL-адресу сайту перед введенням логіна (HTTPS обов'язково).",
                       "Не використовуйте публічний Wi-Fi для банківських операцій без VPN.",
                       "Закривайте доступ до вебкамери, коли не користуєтесь нею.",
-                      "Навчайте близьких (особливо старше покоління) базовому фішингу."
+                      "Навчайте близьких (особливо старше покоління) базовому фішингу.",
+                      "Не завантажуйте підозрілі файли з неперевірених джерел, особливо формати .exe, .bat, .cmd, .msi, .scr, .js та .vbs, оскільки вони найчастіше можуть містити шкідливе програмне забезпечення."
                     ].map((rule, ri) => (
                       <li key={ri} className="flex gap-4 items-start text-slate-200 font-light text-sm sm:text-base">
                         <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-cyber-primary flex-shrink-0" />

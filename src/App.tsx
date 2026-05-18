@@ -99,6 +99,18 @@ export default function App() {
 
   return (
     <div className="relative bg-[#050505] overflow-x-hidden min-h-screen">
+      
+      <style dangerouslySetInnerHTML={{__html: `
+        ::-webkit-scrollbar {
+          display: none;
+          width: 0px;
+          background: transparent;
+        }
+        * {
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
+      `}} />
       <div className="fixed inset-0 pointer-events-none grid-background opacity-20" aria-hidden="true" />
       <div className="fixed top-0 left-1/4 w-[600px] h-[600px] bg-cyber-primary/5 blur-[150px] rounded-full pointer-events-none" aria-hidden="true" />
       <div className="fixed bottom-0 right-1/4 w-[600px] h-[600px] bg-cyber-secondary/5 blur-[150px] rounded-full pointer-events-none" aria-hidden="true" />

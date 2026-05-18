@@ -41,7 +41,9 @@ import {
   Area
 } from "recharts";
 import { cn } from "@/src/lib/utils";
-
+import shieldImg from "./assets/images/cyber_red_hero_shield_1779117242436.png";
+import virusImg from "./assets/images/computer_virus_visual_1779117262729.png";
+import lockImg from "./assets/images/cyber_security_protection_lock_1779117278060.png";
 const statsData = [
   { year: "2019", attacks: 400 },
   { year: "2020", attacks: 480 },
